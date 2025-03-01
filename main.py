@@ -41,7 +41,7 @@ hide_streamlit_style = """
                 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
-st.sidebar.header("About")
+st.sidebar.header("Welcome")
 
 #st.sidebar.image("logo.png")
 
@@ -51,7 +51,7 @@ st.sidebar.title("Sources")
 
 # ------------------ Main App UI ------------------ #
 
-st.markdown("""
+st.title("""
 Complete the fields below to calculate your estimated microplastic exposure
 """)
 st.markdown("""---""")
@@ -61,6 +61,7 @@ col1, col2 = st.columns([1, 1])
 
 # Create input fields for additional details
 with col1:
+    st.header("Demographic information")
     sex = st.selectbox(
         label="Select your sex",
         options=[
@@ -70,20 +71,17 @@ with col1:
         key="sex",
     )
 
-    age = st.number_input(
+    age = st.text_input(
         label="Enter your age",
-        min_value=0,
-        max_value=110,
         key="age",
     )
-# Create input fields for internet_facing and authentication
-    zip_code = st.number_input(
+
+    zip_code = st.text_input(
         label="Enter your zip code",
-        min_value=51,
-        max_value= 999999,
+        max_chars=6,
         key="zip_code",
     )
-
+    st.header("Enviromental information")
     home_hours = st.slider(
         "How many hours a day do you typically spend at home?",
         min_value=0,
