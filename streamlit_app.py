@@ -109,15 +109,31 @@ with col1:
         key="outdoor_hours",
     )
     st.markdown("""---""")
-    st.header("Estimated exposure")
-    inhalation_results = inhalation_calculations.calculation_inhalation_data(zip_code,home_hours,office_hours,outdoor_hours)
-    st.title(inhalation_results[0])
-    st.caption('mnp')
-    st.markdown(f"Exposure by environment in {inhalation_results[4]}, {inhalation_results[5]}")
-    chart_data = pd.DataFrame({
-        'Environment': ['Home', 'Office', 'Outdoor'],
-        'Exposure (mnp)': [inhalation_results[1], inhalation_results[2], inhalation_results[3]]  # Example exposure values
-    }
-    )
 
-    st.bar_chart(chart_data, x="Environment", y="Exposure (mnp)", color="#ADD8E6", stack=False)
+    calculate_button = st.button(label="Calculate exposure")
+    if calculate_button:
+        with st.spinner("Calculating exposure..."):
+            inhalation_results = inhalation_calculations.calculation_inhalation_data(zip_code,home_hours,office_hours,outdoor_hours)
+            st.header("Estimated exposure")
+            st.title(inhalation_results[0])
+            st.caption('mnp')
+            st.markdown(f"Exposure by environment in {inhalation_results[4]}, {inhalation_results[5]}")
+            chart_data = pd.DataFrame({
+                'Environment': ['Home', 'Office', 'Outdoor'],
+                'Exposure (mnp)': [inhalation_results[1], inhalation_results[2], inhalation_results[3]]  # Example exposure values
+            }
+            )
+            st.bar_chart(chart_data, x="Environment", y="Exposure (mnp)", color="#ADD8E6", stack=False)
+            usage_log = 'usage_log.csv' 
+            log_ = pd.DataFrame({
+                'sex' : [sex],
+                'age': [age],  
+                'zip': [zip_code],
+                'home' : [home_hours],
+                'office' : [office_hours],
+                'outdoor' : [outdoor_hours]
+            }
+            )
+            # Append the new row to the usage log
+            log_.to_csv(usage_log, mode='a', header=False, index=False)
+
