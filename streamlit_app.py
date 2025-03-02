@@ -1,5 +1,6 @@
 import streamlit as st
 import inhalation_calculations
+import pandas as pd
 
 st.set_page_config(
     page_title="Deplastico Microplastics calculator",
@@ -74,11 +75,13 @@ with col1:
     age = st.text_input(
         label="Enter your age",
         key="age",
+        value=30
     )
 
     zip_code = st.text_input(
         label="Enter your zip code",
-        max_chars=6,
+        max_chars=5,
+        value=10011,
         key="zip_code",
     )
     st.header("Enviromental information")
@@ -107,5 +110,14 @@ with col1:
     )
     st.markdown("""---""")
     st.header("Estimated exposure")
-    st.title(inhalation_calculations.calculation_inhalation_data(zip_code,home_hours,office_hours,outdoor_hours))
+    inhalation_results = inhalation_calculations.calculation_inhalation_data(zip_code,home_hours,office_hours,outdoor_hours)
+    st.title(inhalation_results[0])
     st.caption('mnp')
+    st.markdown(f"Exposure by environment in {inhalation_results[4]}, {inhalation_results[5]}")
+    chart_data = pd.DataFrame({
+        'Environment': ['Home', 'Office', 'Outdoor'],
+        'Exposure (mnp)': [inhalation_results[1], inhalation_results[2], inhalation_results[3]]  # Example exposure values
+    }
+    )
+
+    st.bar_chart(chart_data, x="Environment", y="Exposure (mnp)", color="#ADD8E6", stack=False)
