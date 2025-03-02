@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="Deplastico Microplastics calculator",
     page_icon=":desktop_computer:",
     layout="wide",
-    initial_sidebar_state="Collapsed",
+    initial_sidebar_state="collapsed",
 )
 
 hide_streamlit_style = """
